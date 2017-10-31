@@ -20,13 +20,13 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'RunServer'
+        attributes 'Main-Class': "RunServerWithJetty"
     }
 }
 
 task startServer(type: JavaExec) {
     classpath sourceSets.main.runtimeClasspath
-    main = "RunServer"
+    main = "RunServerWithJetty"
 }
 
 sourceSets {
