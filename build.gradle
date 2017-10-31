@@ -29,8 +29,14 @@ task startServer(type: JavaExec) {
     main = "RunServerWithJetty"
 }
 
+
+task stage{
+    dependsOn build, clean
+}
+
 sourceSets {
     main {
         output.resourcesDir = "build/classes/main"
     }
 }
+
