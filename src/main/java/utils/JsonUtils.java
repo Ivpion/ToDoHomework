@@ -70,4 +70,8 @@ public class JsonUtils {
 
         return true;
     }
+
+    public static Gson getGSON() {
+        return GSON;
+    }
 }
