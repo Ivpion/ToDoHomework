@@ -45,7 +45,11 @@ public class JettyServer {
 
     private Server createServer(Dao dao, ConfigHolder ch, String staticFilePath){
 
-        Server server = new Server(Integer.parseInt(ch.getProperty("app.port")));
+        String SERVER_PORT = System.getenv("PORT");
+        if(SERVER_PORT == null){
+            SERVER_PORT = ch.getProperty("app.port");
+        }
+        Server server = new Server(Integer.parseInt(SERVER_PORT));
 
         server.setErrorHandler(new ErrorHandler());
 
