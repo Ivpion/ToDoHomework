@@ -1,0 +1,111 @@
+{
+	"info": {
+		"name": "ToDoApp",
+		"_postman_id": "dcd51e54-283a-7cb1-152e-fdcefafffa0b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"disabled": true
+					},
+					{
+						"key": "Contetn-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"SOME\",\n    \"isCompleted\": false\n  }"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"create"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "readAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"list"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"update"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "delete",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "http://localhost:8080/api/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"delete"
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
