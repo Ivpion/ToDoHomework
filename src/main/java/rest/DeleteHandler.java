@@ -30,13 +30,14 @@ public class DeleteHandler extends AbstractHandler {
         response = RestUtils.setResponse(response, HttpServletResponse.SC_OK);
         ToDoModel deletedModel = RestUtils.getToDoModel(request);
         ToDoModel returnModel = null;
+        String error = null;
         try {
             returnModel = dao.delete(deletedModel);
         } catch (AppDBException e) {
-            RestUtils.getPrintWriter(response, null, e.getMessage());
+            error = e.getMessage();
             e.printStackTrace();
         }
-        RestUtils.getPrintWriter(response, returnModel, null);
+        RestUtils.getPrintWriter(response, returnModel, error);
         baseRequest.setHandled(true);
 
     }

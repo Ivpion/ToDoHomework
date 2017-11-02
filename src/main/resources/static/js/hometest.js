@@ -33,7 +33,7 @@ function initToDoItem(itemData) {
             url: "/api/update",
             method: "POST",
             data: JSON.stringify(updateToDo)
-        })
+        }).then(invalidResp);
     });
 
 
@@ -54,7 +54,7 @@ function initToDoItem(itemData) {
             url: "/api/delete",
             method: "POST",
             data: JSON.stringify(deleteToDo)
-        })
+        }).then(invalidResp);
     })
 
     li.appendChild(span);
@@ -108,10 +108,21 @@ function newElement() {
         method: "POST",
         url: "/api/create",
         data: JSON.stringify(elementForSend)
-    }).then(function success(data) {
-        jsonMap.set(li, data);
+    }).then(function success(resp) {
+        if(!resp.error) {
+            jsonMap.set(li, resp.data);
+        }
+        else {
+            // todo show error
+        }
     })
 }
+function invalidResp(resp) {
+    if(resp.error){
+        alert(resp.error)
+        location.reload();
+    }
+}
 
-document.addEventListener("DOMContentLoaded", readList());
+document.addEventListener("DOMContentLoaded", readList);
 

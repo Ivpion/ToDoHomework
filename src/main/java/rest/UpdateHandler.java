@@ -28,13 +28,15 @@ public class UpdateHandler extends AbstractHandler{
         response = RestUtils.setResponse(response, HttpServletResponse.SC_OK);
         ToDoModel updateModel = RestUtils.getToDoModel(request);
         ToDoModel ret = null;
+        String error = null;
         try {
             ret = dao.update(updateModel);
         } catch (AppDBException e) {
-            RestUtils.getPrintWriter(response, null, e.getMessage());
+            error = e.getMessage();
             e.printStackTrace();
         }
-        RestUtils.getPrintWriter(response,ret, null);
+
+        RestUtils.getPrintWriter(response,ret, error);
         baseRequest.setHandled(true);
 
 
