@@ -31,9 +31,10 @@ public class UpdateHandler extends AbstractHandler{
         try {
             ret = dao.update(updateModel);
         } catch (AppDBException e) {
+            RestUtils.getPrintWriter(response, null, e.getMessage());
             e.printStackTrace();
         }
-        RestUtils.getPrintWriter(response,ret);
+        RestUtils.getPrintWriter(response,ret, null);
         baseRequest.setHandled(true);
 
 

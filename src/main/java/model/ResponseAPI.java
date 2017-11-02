@@ -2,9 +2,9 @@ package model;
 
 public class ResponseAPI {
     private String error; // null | "Error msg text"
-    private String data; // null
+    private Object data; // null
 
-    public ResponseAPI(String error, String data) {
+    public ResponseAPI(String error, Object data) {
         this.error = error;
         this.data = data;
     }
@@ -17,11 +17,11 @@ public class ResponseAPI {
         this.error = error;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(Object data) {
         this.data = data;
     }
 }

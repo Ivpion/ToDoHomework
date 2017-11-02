@@ -27,7 +27,7 @@ public class ReadAllHandler extends AbstractHandler {
             throws IOException, ServletException {
         response = RestUtils.setResponse(response, HttpServletResponse.SC_OK);
         List<ToDoModel> list = dao.readAll();
-        RestUtils.getPrintWriter(response, list);
+        RestUtils.getPrintWriter(response, list, null);
         baseRequest.setHandled(true);
 
 
