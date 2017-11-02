@@ -71,7 +71,7 @@ function readList() {
         success: function (data) {
             document.getElementById("taskInput").value = "";
             var fragment = document.createDocumentFragment();
-            if (data.message === undefined) {
+            if (data.error === undefined) {
                 for (var i = 0; i < data.data.length; i++) {
                     var jsonObj = data.data[i];
 
@@ -82,7 +82,7 @@ function readList() {
 
                 document.getElementById("tasksList").appendChild(fragment);
             } else {
-                alert(data.message);
+                alert(data.error);
             }
         }
     });
