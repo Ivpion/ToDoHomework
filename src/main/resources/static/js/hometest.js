@@ -1,117 +1,128 @@
 let jsonMap = new Map();
 
-function ListElement(title){
-	this.title = title;
-	this.isCompleted = false;
+function ListElement(title) {
+    this.title = title;
+    this.isCompleted = false;
 }
 
 function applyItemState(isCompleted, el) {
-	if(isCompleted) {
-		el.classList.add("checked")
-	}
-	else {
-		el.classList.remove("checked")
-	}
+    if (isCompleted) {
+        el.classList.add("checked")
+    }
+    else {
+        el.classList.remove("checked")
+    }
 }
 
 
 function initToDoItem(itemData) {
-	var li = document.createElement("li");
-	
-	jsonMap.set(li, itemData);	
-	
-	li.innerHTML = itemData.title;
-	applyItemState(itemData.isCompleted, li)		
-	li.addEventListener("click", function updateHandler(ev){
+    var li = document.createElement("li");
 
-		var updateToDo = jsonMap.get(ev.target);
-		updateToDo.isCompleted = !updateToDo.isCompleted;
+    jsonMap.set(li, itemData);
 
-		applyItemState(updateToDo.isCompleted, ev.target);
+    li.innerHTML = itemData.title;
+    applyItemState(itemData.isCompleted, li)
+    li.addEventListener("click", function updateHandler(ev) {
 
-		$.ajax({
-			url: "/api/update",
-			method: "POST",
-			data: JSON.stringify(updateToDo)
-		})
-	});
+        var updateToDo = jsonMap.get(ev.target);
+        updateToDo.isCompleted = !updateToDo.isCompleted;
 
-	
-	
+        applyItemState(updateToDo.isCompleted, ev.target);
 
-	var span = document.createElement("SPAN");
-	span.innerHTML = "\u00D7";
-	span.className = "close";	
-	span.addEventListener("click", function closeHandler(ev){
-		var deleteToDo = jsonMap.get(ev.target.parentElement);
+        $.ajax({
+            url: "/api/update",
+            method: "POST",
+            data: JSON.stringify(updateToDo)
+        }).then(invalidResp);
+    });
 
-		ev.stopPropagation();
-		ev.preventDefault();
 
-		var li = ev.target.parentElement;
-		
-		li.parentElement.removeChild(li);
+    var span = document.createElement("SPAN");
+    span.innerHTML = "\u00D7";
+    span.className = "close";
+    span.addEventListener("click", function closeHandler(ev) {
+        var deleteToDo = jsonMap.get(ev.target.parentElement);
 
-		$.ajax({
-			url: "/api/delete",
-			method: "POST",
-			data: JSON.stringify(deleteToDo)
-		})
-	})
+        ev.stopPropagation();
+        ev.preventDefault();
 
-	li.appendChild(span);
+        var li = ev.target.parentElement;
 
-	
+        li.parentElement.removeChild(li);
 
-	return li;
+        $.ajax({
+            url: "/api/delete",
+            method: "POST",
+            data: JSON.stringify(deleteToDo)
+        }).then(invalidResp);
+    })
+
+    li.appendChild(span);
+
+
+    return li;
 }
 
 
-function readList(){
-	$.ajax({
-		url:'/api/list',
-		method: 'GET',
-		success: function(data) {
-			document.getElementById("taskInput").value = "";
-			var fragment = document.createDocumentFragment();
+function readList() {
+    $.ajax({
+        url: '/api/list',
+        method: 'GET',
+        success: function (data) {
+            document.getElementById("taskInput").value = "";
+            var fragment = document.createDocumentFragment();
+            if (data.error === undefined) {
+                for (var i = 0; i < data.data.length; i++) {
+                    var jsonObj = data.data[i];
 
-			for (var i = 0; i < data.length; i++) {
-			  	var jsonObj =	data[i];
-			  	
-			  	if (jsonObj !== undefined) {
-			  		fragment.appendChild(initToDoItem(jsonObj));
-			  	}
-			}
+                    if (jsonObj !== undefined) {
+                        fragment.appendChild(initToDoItem(jsonObj));
+                    }
+                }
 
-			document.getElementById("tasksList").appendChild(fragment);
-		}
-	});
+                document.getElementById("tasksList").appendChild(fragment);
+            } else {
+                alert(data.error);
+            }
+        }
+    });
 }
 
 function newElement() {
 
-	var inputValue = document.getElementById("taskInput").value;	
-	
-	if (inputValue === '') {
-		alert("You must wtite something!");
-		return;
-	} 
-	document.getElementById("taskInput").value = "";	
+    var inputValue = document.getElementById("taskInput").value;
 
-	var elementForSend = new ListElement(inputValue.toString());
+    if (inputValue === '') {
+        alert("You must wtite something!");
+        return;
+    }
+    document.getElementById("taskInput").value = "";
 
-	var li = initToDoItem(elementForSend);
-	document.getElementById("tasksList").appendChild(li);
-	
+    var elementForSend = new ListElement(inputValue.toString());
 
-	$.ajax({
-		method: "POST",
-		url: "/api/create",
-		data: JSON.stringify(elementForSend)
-	}).then(function success(data){
-		jsonMap.set(li, data);
-	})
+    var li = initToDoItem(elementForSend);
+    document.getElementById("tasksList").appendChild(li);
+
+
+    $.ajax({
+        method: "POST",
+        url: "/api/create",
+        data: JSON.stringify(elementForSend)
+    }).then(function success(resp) {
+        if(!resp.error) {
+            jsonMap.set(li, resp.data);
+        }
+        else {
+            // todo show error
+        }
+    })
+}
+function invalidResp(resp) {
+    if(resp.error){
+        alert(resp.error)
+        location.reload();
+    }
 }
 
-document.addEventListener("DOMContentLoaded", readList());
+document.addEventListener("DOMContentLoaded", readList);
 

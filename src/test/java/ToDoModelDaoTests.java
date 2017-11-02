@@ -99,14 +99,14 @@ public class ToDoModelDaoTests {
         assertEquals(expected, actual);
     }
 
-    @Test
+    @Test(expected = AppDBException.class)
     public void negativeUpdateTest() throws AppDBException {
         ToDoModel expected = new ToDoModel("asdf", true);
         expected.setId(1);
         toDoModel1.setId(1000);
         ToDoModel actual = toDoModelDao.update(toDoModel1);
-        assertNotEquals(expected, actual);
-        //assertNotNull(actual);
+
+
     }
 
     @Test
@@ -118,13 +118,12 @@ public class ToDoModelDaoTests {
         assertEquals(expected, actual);
     }
 
-    @Test
+    @Test(expected = AppDBException.class)
     public void negativeDeleteTest() throws AppDBException {
         ToDoModel expected = new ToDoModel("asdf", true);
         expected.setId(1);
         ToDoModel actual = toDoModelDao.delete(toDoModel1);
-        assertNotEquals(expected, actual);
-        //assertNotNull(actual);
+
     }
 
 

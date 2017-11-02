@@ -1,5 +1,6 @@
 package utils;
 
+import model.ResponseAPI;
 import model.ToDoModel;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,9 +22,14 @@ public class RestUtils {
         return model;
     }
 
-    public static PrintWriter getPrintWriter(HttpServletResponse response, Object model) throws IOException {
+    public static PrintWriter getPrintWriter(HttpServletResponse response, Object model, String errorMes) throws IOException {
         PrintWriter out = response.getWriter();
-        out.println(JsonUtils.getGSON().toJson(model));
+        ResponseAPI responseObj = new ResponseAPI(null, model);
+        if (model == null){
+            responseObj = new ResponseAPI(errorMes, model);
+        }
+
+        out.println(JsonUtils.getGSON().toJson(responseObj));
         out.flush();
         return out;
     }

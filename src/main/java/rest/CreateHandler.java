@@ -29,12 +29,14 @@ public class CreateHandler extends AbstractHandler {
         response = RestUtils.setResponse(response, HttpServletResponse.SC_CREATED);
         ToDoModel createModel = RestUtils.getToDoModel(request);
         ToDoModel returnModel = null;
+        String error = null;
         try {
             returnModel = dao.create(createModel);
         } catch (AppDBException e) {
+            error = e.getMessage();
             e.printStackTrace();
         }
-        RestUtils.getPrintWriter(response,returnModel);
+        RestUtils.getPrintWriter(response,returnModel, error);
         baseRequest.setHandled(true);
     }
 }

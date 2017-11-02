@@ -63,6 +63,9 @@ public class ToDoModelDao implements dao.Dao {
                 returnModel = updated;
             }
         }
+
+        if (returnModel == null) throw new AppDBException("specified model is not found");
+
         String modelListInJson = gson.toJson(container.list, toDoListType);
         if (!JsonUtils.writeJsonToFile(filePath, modelListInJson)) {
             throw new AppDBException();
@@ -81,7 +84,7 @@ public class ToDoModelDao implements dao.Dao {
                 break;
             }
         }
-
+        if (updateModel == null) throw new AppDBException("specified model is not found");
         String modelListInJson = gson.toJson(container.list, toDoListType);
         if (!JsonUtils.writeJsonToFile(filePath, modelListInJson)) {
             throw new AppDBException();
