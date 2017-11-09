@@ -22,7 +22,7 @@ public class RestUtils {
         return model;
     }
 
-    public static PrintWriter getPrintWriter(HttpServletResponse response, Object model, String errorMes) throws IOException {
+    public static PrintWriter sendResponse(HttpServletResponse response, Object model, String errorMes) throws IOException {
         PrintWriter out = response.getWriter();
         ResponseAPI responseObj = new ResponseAPI(null, model);
         if (model == null){

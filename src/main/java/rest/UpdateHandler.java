@@ -36,7 +36,7 @@ public class UpdateHandler extends AbstractHandler{
             e.printStackTrace();
         }
 
-        RestUtils.getPrintWriter(response,ret, error);
+        RestUtils.sendResponse(response,ret, error);
         baseRequest.setHandled(true);
 
 
