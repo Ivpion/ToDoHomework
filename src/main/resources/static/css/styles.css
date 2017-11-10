@@ -17,11 +17,6 @@ ul{
 ul li {
 	cursor: pointer;
 	position: relative;
-	padding: 15px 10px 15px 50px;
-	background: #eee;
-	font-size: 20px;
-	transition: 0.2s;
-	list-style-type: none;
 
 	-webkit-user-select: none;
     -moz-user-select: none;
@@ -29,21 +24,50 @@ ul li {
     user-select: none;
 }
 
-ul li:nth-child(odd){
+.pagination {
+	position: absolute;
+	bottom: 5%;
+	margin: 0 auto;
+	width: 80%;
+}
+
+.pagination li {
+	float: left;
+	list-style: none;
+	outline: 1px dashed tomato;
+	padding: 0 10px;
+	margin: 0 3px;
+}
+
+.nonActive {
+	outline: none;
+	color: #999;
+	background: white;
+}
+
+#tasksList li {
+	padding: 15px 10px 15px 50px;
+	background: #aaaaaa;
+	font-size: 20px;
+	transition: 0.2s;
+	list-style-type: none;
+}
+
+#tasksList li:nth-child(odd){
 	background: #f9f9f9;
 }
 
-ul li:hover {
+#tasksList li:hover {
 	background: #ddd;
 }
 
-ul li.checked{
+#tasksList li.checked{
 	background: #888;
 	color: #fff;
 	text-decoration: line-through;
 }
 
-ul li.checked::before{
+#tasksList  li.checked::before{
 	content: '';
 	position: absolute;
 	border-color: #fff;

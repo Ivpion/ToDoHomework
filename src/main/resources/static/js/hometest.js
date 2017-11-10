@@ -1,3 +1,7 @@
+/**
+ *
+ * @type {Map<HTMLElement,TodoModel>}
+ */
 let jsonMap = new Map();
 
 function ListElement(title) {
@@ -63,11 +67,81 @@ function initToDoItem(itemData) {
     return li;
 }
 
+function getPagesInfo() {
+    //  =>  /api/pages/{count: number} -> 5 (items per page) (total items = ceil(78 / 5)  )
+    //  <= {error: null, data: number} (means totalPages) <-16
+    //
+    $.ajax({
+        url: "/api/pages",
+        method: "GET",
+        data: {
+            count: $('#perPageCount').val()
+        },
+        success: function (response) {
+            if(response.error !== undefined){
+                alert("response error");
+                return;
+            }
+            var pagesCount = response.data;
+            var fragment = document.createDocumentFragment();
+            // process items in loop
+            for (var i = 1; i <= pagesCount; i++){
+                if(i < 3){
+                    fragment.appendChild(initPageElement(i));
+                } else {
+                    fragment.appendChild(initPageElement("..."));
+                    fragment.appendChild(initPageElement(pagesCount));
+                    break;
+                }
+            }
 
-function readList() {
+
+            $(".pagination")
+                .empty()
+                .append(fragment)
+            ;
+
+            readList(1);
+        }
+
+    })
+}
+
+function initPageElement(numOfPage) {
+    var li = document.createElement("li");
+    li.innerHTML = numOfPage;
+    li.setAttribute("data-value", numOfPage);
+    if (numOfPage === "...") {
+        li.classList.add("nonActive");
+        return li;
+    }
+
+    li.addEventListener("click", function () {
+
+        var pageNo = this.getAttribute("data-value");
+        // todo: define if this number or text like "..."
+        if(pageNo === "..."){
+            //...
+        }
+        else {
+            readList(pageNo);
+        }
+    });
+
+    return li;
+}
+
+
+function readList(page) {
+
+
     $.ajax({
         url: '/api/list',
         method: 'GET',
+        data: {
+            page: page,
+            count: $('#perPageCount').val(),
+        },
         success: function (data) {
             document.getElementById("taskInput").value = "";
             var fragment = document.createDocumentFragment();
@@ -79,8 +153,7 @@ function readList() {
                         fragment.appendChild(initToDoItem(jsonObj));
                     }
                 }
-
-                document.getElementById("tasksList").appendChild(fragment);
+                $("#tasksList").empty().append(fragment);
             } else {
                 alert(data.error);
             }
@@ -93,7 +166,7 @@ function newElement() {
     var inputValue = document.getElementById("taskInput").value;
 
     if (inputValue === '') {
-        alert("You must wtite something!");
+        alert("You must write something!");
         return;
     }
     document.getElementById("taskInput").value = "";
@@ -124,5 +197,10 @@ function invalidResp(resp) {
     }
 }
 
-document.addEventListener("DOMContentLoaded", readList);
+document.addEventListener("DOMContentLoaded", function () {
+    $('#perPageCount').on("change", function () {
+        getPagesInfo();
+    })
+    getPagesInfo();
+});
 

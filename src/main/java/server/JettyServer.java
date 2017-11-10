@@ -66,6 +66,10 @@ public class JettyServer {
         contextCreate.setAllowNullPathInfo(true);
         contextCreate.setHandler(new CreateHandler(dao));
 
+        ContextHandler contextPages = new ContextHandler("/api/pages");
+        contextPages.setAllowNullPathInfo(true);
+        contextPages.setHandler(new PagesHandler(dao));
+
 
         ContextHandler contextRead = new ContextHandler("/api/read");
         contextRead.setHandler(new ReadHandler(dao));
@@ -79,14 +83,15 @@ public class JettyServer {
         contextDelete.setHandler(new DeleteHandler(dao));
 
         ContextHandler contextReadAll = new ContextHandler("/api/list");
-        contextReadAll.setHandler(new ReadAllHandler(dao));
+        contextReadAll.setHandler(new ReadFromToHandler(dao));
 
         handlers.setHandlers(new Handler[]{resource_handler
                 ,contextCreate
                 ,contextRead
                 ,contextUpdate
                 ,contextDelete
-                ,contextReadAll});
+                ,contextReadAll
+                ,contextPages});
 
         server.setHandler(handlers);
 

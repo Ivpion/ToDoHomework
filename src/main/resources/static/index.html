@@ -14,16 +14,35 @@
 	<div id="header" class="header">
 		<h2>My ToDo List</h2>
 		<input type="text" id="taskInput" placeholder="Add your ToDo...">
+		<!--todo onclick via jquery-->
 		<span onclick="newElement()" class="addButton">Add</span>
-	</div>
 
+		<lable for="perPageCount">Items per page:</lable>
+		<select name="perPage" id="perPageCount">
+			<option value="5" selected>5</option>
+			<option value="10">10</option>
+			<option value="15">15</option>
+		</select>
+	</div>
 	<ul id="tasksList">
 		<!-- <li class="checked">Go to University</li>
 		<li>Do my homework</li>
 		<li>Be happy</li> -->
 
 	</ul>
+	<ul class="pagination">
+		<!--<li> << </li>-->
+		<!--<li> < </li>-->
 
+		<!--
+		<li data-value="1">1</li>
+		<li>2</li>
+		<li>...</li>
+		-->
+
+		<!--<li> > </li>-->
+		<!--<li> >> </li>-->
+	</ul>
 </body>
 
 <script type="text/javascript" src="js/hometest.js"></script>
