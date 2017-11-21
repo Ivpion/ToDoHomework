@@ -188,7 +188,6 @@ function newElement() {
         data: JSON.stringify(elementForSend)
     }).then(function success(resp) {
         if(!resp.error) {
-            // todo: check current jsonMap length
             jsonMap.set(li, resp.data);
         }
         else {
@@ -204,46 +203,9 @@ function invalidResp(resp) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    // $('#perPageCount').on("change", function () {
-    //     getPagesInfo();
-    // })
-    // getPagesInfo();
-
-    $('#tasksList').pagination({
-        dataSource: '/api/list', //[1, 2, 3, 4, 5, 6, 7, 195],
-        alias: {
-            pageNumber: 'page',
-            pageSize: 'count'
-        },
-        locator: function() {
-            // find data and return
-            return 'data.items';
-        },
-        // totalNumber: 120,
-        totalNumberLocator: function(response){
-            // {
-            //      data: {
-            //          items: [ {...}, ....],
-            //          total: 24
-            //      },
-            // console.log(response);
-            // var total = 5 * 10; // total item count
-            return response.data.total;
-        },
-        callback: function (data, pagination) {
-            // template method of yourself
-            // var html = template(data);
-            // dataContainer.html(html);
-            console.log(data, pagination);
-        }
-    });
-
-
-
-
-
-
-
-
+    $('#perPageCount').on("change", function () {
+        getPagesInfo();
+    })
+    getPagesInfo();
 });
 
