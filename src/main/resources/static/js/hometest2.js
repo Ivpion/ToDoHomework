@@ -2,6 +2,7 @@
  *
  * @type {Map<HTMLElement,TodoModel>}
  */
+//todo delete
 let jsonMap = new Map();
 
 function ListElement(title) {

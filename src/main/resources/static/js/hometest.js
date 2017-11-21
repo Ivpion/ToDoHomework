@@ -4,6 +4,8 @@
  */
 let jsonMap = new Map();
 
+let pagination;
+
 function ListElement(title) {
     this.title = title;
     this.isCompleted = false;
@@ -43,7 +45,8 @@ function initToDoItem(itemData) {
 
     var span = document.createElement("SPAN");
     span.innerHTML = "\u00D7";
-    span.className = "close";
+    span.className = "closed";
+    span.id = "close";
     span.addEventListener("click", function closeHandler(ev) {
         var deleteToDo = jsonMap.get(ev.target.parentElement);
 
@@ -145,14 +148,14 @@ function readList(page) {
         method: 'GET',
         data: {
             page: page,
-            count: $('#perPageCount').val(),
+            count: 10,
         },
         success: function (data) {
             document.getElementById("taskInput").value = "";
             var fragment = document.createDocumentFragment();
             if (data.error === undefined) {
-                for (var i = 0; i < data.data.length; i++) {
-                    var jsonObj = data.data[i];
+                for (var i = 0; i < data.data.items.length; i++) {
+                    var jsonObj = data.data.items[i];
 
                     if (jsonObj !== undefined) {
                         fragment.appendChild(initToDoItem(jsonObj));
@@ -178,9 +181,6 @@ function newElement() {
 
     var elementForSend = new ListElement(inputValue.toString());
 
-    var li = initToDoItem(elementForSend);
-    document.getElementById("tasksList").appendChild(li);
-
 
     $.ajax({
         method: "POST",
@@ -188,8 +188,12 @@ function newElement() {
         data: JSON.stringify(elementForSend)
     }).then(function success(resp) {
         if(!resp.error) {
-            // todo: check current jsonMap length
-            jsonMap.set(li, resp.data);
+            pagination.pagination("refresh");
+
+            // var li = initToDoItem(elementForSend);
+            // document.getElementById("tasksList").appendChild(li);
+            //
+            // jsonMap.set(li, resp.data);
         }
         else {
             // todo show error
@@ -208,8 +212,13 @@ document.addEventListener("DOMContentLoaded", function () {
     //     getPagesInfo();
     // })
     // getPagesInfo();
+    //todo refactor code
+    //todo винести створення ліста в окремиий метод
+    //todo зробити робоций айтем перпейдж
+    //todo винести створення пагінатора в окремий метод
+    //
 
-    $('#tasksList').pagination({
+    pagination = $('#paginator').pagination({
         dataSource: '/api/list', //[1, 2, 3, 4, 5, 6, 7, 195],
         alias: {
             pageNumber: 'page',
@@ -235,6 +244,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // var html = template(data);
             // dataContainer.html(html);
             console.log(data, pagination);
+            console.log(pagination.pageNumber);
+            readList(pagination.pageNumber);
         }
     });
 
