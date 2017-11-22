@@ -1,6 +1,7 @@
 package server;
 
 import config.ConfigHolder;
+import config.ObjectHolder;
 import dao.Dao;
 import dao.ToDoModelDao;
 import org.eclipse.jetty.server.Handler;
@@ -15,12 +16,12 @@ import java.io.File;
 import java.io.IOException;
 
 public class JettyServer {
-    private static final String CONFIG_FILE_PATH = "/app.properties";
+        private static final String CONFIG_FILE_PATH = "/app.properties";
     private static final String STATIC_FILES_PATH = "/static";
 
 
     public void startServer() throws Exception {
-        ConfigHolder ch = createConfigHolder();
+        ConfigHolder ch = getConfigHolder();
         String staticFilePath = createStaticFilePath();
         Dao dao = createDao(ch);
         Server server = createServer(dao, ch, staticFilePath);
@@ -28,10 +29,10 @@ public class JettyServer {
         server.join();
     }
 
-    private ConfigHolder createConfigHolder() throws IOException {
-       return new ConfigHolder(
-                new File(JettyServer.class.getResource(CONFIG_FILE_PATH).getFile()).getAbsolutePath());
+    private ConfigHolder getConfigHolder(){
+        return new ObjectHolder().getObject("ConfigHolder", ConfigHolder.class);
     }
+
     private String createStaticFilePath(){
         return new File(JettyServer.class.getResource(STATIC_FILES_PATH).getFile()).getAbsolutePath();
     }
@@ -65,6 +66,10 @@ public class JettyServer {
         contextCreate.setAllowNullPathInfo(true);
         contextCreate.setHandler(new CreateHandler(dao));
 
+        ContextHandler contextPages = new ContextHandler("/api/pages");
+        contextPages.setAllowNullPathInfo(true);
+        contextPages.setHandler(new PagesHandler(dao));
+
 
         ContextHandler contextRead = new ContextHandler("/api/read");
         contextRead.setHandler(new ReadHandler(dao));
@@ -78,14 +83,15 @@ public class JettyServer {
         contextDelete.setHandler(new DeleteHandler(dao));
 
         ContextHandler contextReadAll = new ContextHandler("/api/list");
-        contextReadAll.setHandler(new ReadAllHandler(dao));
+        contextReadAll.setHandler(new ReadFromToHandler(dao));
 
         handlers.setHandlers(new Handler[]{resource_handler
                 ,contextCreate
                 ,contextRead
                 ,contextUpdate
                 ,contextDelete
-                ,contextReadAll});
+                ,contextReadAll
+                ,contextPages});
 
         server.setHandler(handlers);
 

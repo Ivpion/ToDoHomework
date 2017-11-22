@@ -1,5 +1,6 @@
 package dao;
 
+
 import exception.AppDBException;
 import model.ToDoModel;
 
@@ -18,6 +19,10 @@ public interface Dao {
     DataContainer getContainer();
 
     List<ToDoModel> readAll();
+
+    List<ToDoModel> readFromTo(int from, int to);
+
+    int getQuantityOfPages(int pageSelector);
 
 
 }

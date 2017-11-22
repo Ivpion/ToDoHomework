@@ -67,8 +67,16 @@
 			"name": "update",
 			"request": {
 				"method": "POST",
-				"header": [],
-				"body": {},
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/javascript"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n            \"id\": 1,\n            \"title\": \"Some Title\",\n            \"isCompleted\": false\n        }"
+				},
 				"url": {
 					"raw": "http://localhost:8080/api/update",
 					"protocol": "http",
@@ -89,8 +97,16 @@
 			"name": "delete",
 			"request": {
 				"method": "POST",
-				"header": [],
-				"body": {},
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/javascript"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n            \"id\": 1,\n            \"title\": \"Some Title\",\n            \"isCompleted\": false\n        }"
+				},
 				"url": {
 					"raw": "http://localhost:8080/api/delete",
 					"protocol": "http",

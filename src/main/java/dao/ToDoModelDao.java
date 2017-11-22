@@ -8,6 +8,7 @@ import model.ToDoModel;
 import utils.JsonUtils;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,6 +53,22 @@ public class ToDoModelDao implements dao.Dao {
     @Override
     public List<ToDoModel> readAll() {
         return container.list;
+    }
+
+    @Override
+    public List<ToDoModel> readFromTo(int from, int to) {
+        List<ToDoModel> fromToList;
+        if (to > container.list.size()){
+            to = container.list.size();
+        }
+        fromToList = container.list.subList(from, to);
+        return fromToList;
+    }
+
+    @Override
+    public int getQuantityOfPages(int pageSelector) {
+        double count = (double) container.list.size() / (double) pageSelector;
+        return (int)Math.ceil(count);
     }
 
     @Override

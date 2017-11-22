@@ -6,24 +6,47 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"
 			integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 			crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/paginationjs/2.1.0/pagination.min.js"></script>
 
 <link rel="stylesheet" type="text/css" href="css/styles.css"/>
+<link rel="stylesheet" type="text/css" href="css/pagination.css"/>
 </head>
 <body>
 
 	<div id="header" class="header">
 		<h2>My ToDo List</h2>
 		<input type="text" id="taskInput" placeholder="Add your ToDo...">
+		<!--todo onclick via jquery-->
 		<span onclick="newElement()" class="addButton">Add</span>
+
+		<lable for="perPageCount">Items per page:</lable>
+		<select name="perPage" id="perPageCount">
+			<option value="5">5</option>
+			<option value="10" selected>10</option>
+			<option value="15">15</option>
+		</select>
 	</div>
+	<div id="tasksList"></div>
+	<!--<ul id="tasksList">-->
+		<!--&lt;!&ndash; <li class="checked">Go to University</li>-->
+		<!--<li>Do my homework</li>-->
+		<!--<li>Be happy</li> &ndash;&gt;-->
 
-	<ul id="tasksList">
-		<!-- <li class="checked">Go to University</li>
-		<li>Do my homework</li>
-		<li>Be happy</li> -->
+	<!--</ul>-->
+	<div id="paginator"></div>
+	<!--<ul class="pagination" id="pagination">-->
+		<!--&lt;!&ndash;<li> << </li>&ndash;&gt;-->
+		<!--&lt;!&ndash;<li> < </li>&ndash;&gt;-->
 
-	</ul>
+		<!--&lt;!&ndash;-->
+		<!--<li data-value="1">1</li>-->
+		<!--<li>2</li>-->
+		<!--<li>...</li>-->
+		<!--&ndash;&gt;-->
 
+		<!--&lt;!&ndash;<li> > </li>&ndash;&gt;-->
+		<!--&lt;!&ndash;<li> >> </li>&ndash;&gt;-->
+	<!--</ul>-->
 </body>
 
 <script type="text/javascript" src="js/hometest.js"></script>

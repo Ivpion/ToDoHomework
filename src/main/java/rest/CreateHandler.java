@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class CreateHandler extends AbstractHandler {
 
@@ -36,7 +37,8 @@ public class CreateHandler extends AbstractHandler {
             error = e.getMessage();
             e.printStackTrace();
         }
-        RestUtils.getPrintWriter(response,returnModel, error);
+
+        RestUtils.sendResponse(response,returnModel, error);
         baseRequest.setHandled(true);
     }
 }

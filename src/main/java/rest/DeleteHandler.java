@@ -37,7 +37,7 @@ public class DeleteHandler extends AbstractHandler {
             error = e.getMessage();
             e.printStackTrace();
         }
-        RestUtils.getPrintWriter(response, returnModel, error);
+        RestUtils.sendResponse(response, returnModel, error);
         baseRequest.setHandled(true);
 
     }

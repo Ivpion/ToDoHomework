@@ -1,6 +1,7 @@
 package rest;
 
 import dao.Dao;
+import model.ListData;
 import model.ToDoModel;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -12,11 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class ReadAllHandler extends AbstractHandler {
+public class ReadFromToHandler extends AbstractHandler {
 
     private Dao dao;
 
-    public ReadAllHandler(Dao dao) {
+    public ReadFromToHandler(Dao dao) {
         this.dao = dao;
 
     }
@@ -26,8 +27,15 @@ public class ReadAllHandler extends AbstractHandler {
                        HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         response = RestUtils.setResponse(response, HttpServletResponse.SC_OK);
-        List<ToDoModel> list = dao.readAll();
-        RestUtils.getPrintWriter(response, list, null);
+        int pageNum = Integer.parseInt(request.getParameter("page"));
+        int pageSelector = Integer.parseInt(request.getParameter("count"));
+        int from = (pageNum-1) * pageSelector;
+        int to = from + pageSelector;
+        List<ToDoModel> list = dao.readFromTo(from, to);
+        ListData data = new ListData();
+        data.setItems(list);
+        data.setTotal(dao.readAll().size());
+        RestUtils.sendResponse(response, data, null);
         baseRequest.setHandled(true);
 
 

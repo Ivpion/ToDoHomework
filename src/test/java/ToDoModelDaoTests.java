@@ -6,6 +6,7 @@ import dao.ToDoModelDao;
 import exception.AppDBException;
 import model.ToDoModel;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import utils.JsonUtils;
@@ -13,6 +14,7 @@ import utils.JsonUtils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -123,6 +125,26 @@ public class ToDoModelDaoTests {
         ToDoModel expected = new ToDoModel("asdf", true);
         expected.setId(1);
         ToDoModel actual = toDoModelDao.delete(toDoModel1);
+
+    }
+
+    @Test
+    public void positiveGetQuantityOfPages() throws AppDBException {
+        int expected = 2;
+        toDoModelDao.create(new ToDoModel("asdf", true));
+        toDoModelDao.create(new ToDoModel("asdf", true));
+        Assert.assertEquals(expected, toDoModelDao.getQuantityOfPages(2));
+    }
+
+    @Test
+    public void positiveReadFromTo() throws AppDBException {
+        List<ToDoModel> expected = new ArrayList<>();
+        ToDoModel modelFromTo = new ToDoModel("asdf", true);
+        modelFromTo.setId(1);
+        expected.add(modelFromTo);
+
+        toDoModelDao.create(new ToDoModel("asdf", true));
+        Assert.assertEquals(expected, toDoModelDao.readFromTo(1,2));
 
     }
 
